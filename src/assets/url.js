@@ -7,7 +7,6 @@ function initYiiUrl(urlManager) {
         home: '/',
         ...(urlManager || {}),
     };
-    const caches = {};
 
     function _stringify(obj, prefix = "") {
         return Object.keys(obj)
@@ -32,6 +31,7 @@ function initYiiUrl(urlManager) {
         }
         return url.replace(/^\/+/, '').replace(/\/+$/, '');
     }
+
     function createUrl(rule, route, params, method) {
         if (rule.verb && rule.verb.indexOf(method) < 0) {
             return false;
@@ -116,10 +116,7 @@ function initYiiUrl(urlManager) {
     const yiiUrl = (path, params, method) => {
         path = path.replace(/^\/+/, '').replace(/\/+$/, '');
         method = method ? method.toUpperCase() : 'GET';
-        const keyCache = method + ':' + path + '?' + stringify(params || {});
-        if (typeof caches[keyCache] !== 'undefined') {
-            return caches[keyCache];
-        }
+        
         let url = false;
         for (const rule of rules) {
             if ((url = createUrl(rule, path, params, method)) !== false) {
@@ -154,7 +151,6 @@ function initYiiUrl(urlManager) {
             }
             result = `${baseUrl}/${url}`;
         }
-        caches[keyCache] = result;
         return result;
     };
 
