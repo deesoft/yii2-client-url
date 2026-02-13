@@ -62,7 +62,6 @@ class Helper
         ];
         foreach ($props as $name) {
             $prop = $ref->getProperty($name);
-            $prop->setAccessible(true);
             $row[ltrim($name, '_')] = $prop->getValue($rule);
         }
         if ($row['routeRule']) {
@@ -94,7 +93,6 @@ class Helper
     {
         $ref = new ReflectionClass($rule);
         $prop = $ref->getProperty('rules');
-        $prop->setAccessible(true);
         $rules = $prop->getValue($rule);
         foreach ($rules as $child) {
             if ($child instanceof UrlRule) {
